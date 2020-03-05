@@ -1,1 +1,1 @@
-# pWire Client
+# pWire Sensor
