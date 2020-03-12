@@ -17,4 +17,4 @@ unit_tests:
   artifacts:
     expire_in: 1 day
     paths:
-      - test/build/pwire_client-test
+      - test/build/pwire-sensor-test

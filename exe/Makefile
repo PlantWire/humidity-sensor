@@ -1,4 +1,4 @@
-EXECUTABLE = pwire-sensor-exe
+EXECUTABLE = pwire-sensor
 BUILD_MODE = debug
 
 ifeq ($(BUILD_MODE),debug)
@@ -19,7 +19,7 @@ build_exe:
     else
 	mkdir -p build/
     endif
-	$(CXX) -I include/ src/pwire-sensor-exe.cpp -c $(CFLAGS) $(CXXFLAGS) $(CPPFLAGS) -o build/$(EXECUTABLE).o
+	$(CXX) -I include/ src/$(EXECUTABLE).cpp -c $(CFLAGS) $(CXXFLAGS) $(CPPFLAGS) -o build/$(EXECUTABLE).o
 	$(CXX) build/$(EXECUTABLE).o -L ../lib/build/ -lpwire-sensor -o build/$(EXECUTABLE)
 
 clean:
