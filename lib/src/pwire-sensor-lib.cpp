@@ -1,4 +1,4 @@
-#include "../include/pwire.h"
+#include "../include/pwire-sensor-lib.h"
 
 #include <ostream>
 

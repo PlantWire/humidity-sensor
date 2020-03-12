@@ -5,7 +5,7 @@
 #include "../cute/xml_listener.h"
 #include "../cute/cute_runner.h"
 
-#include "../../lib/include/pwire.h"
+#include "../../lib/include/pwire-sensor-lib.h"
 
 void thisIsARunningTest() {
     ASSERT(true);

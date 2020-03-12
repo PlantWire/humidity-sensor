@@ -1,4 +1,4 @@
-EXECUTABLE = pwire_client-exe
+EXECUTABLE = pwire-sensor-exe
 BUILD_MODE = debug
 
 ifeq ($(BUILD_MODE),debug)
@@ -19,8 +19,8 @@ build_exe:
     else
 	mkdir -p build/
     endif
-	$(CXX) -I include/ src/main.cpp -c $(CFLAGS) $(CXXFLAGS) $(CPPFLAGS) -o build/$(EXECUTABLE).o
-	$(CXX) build/$(EXECUTABLE).o -o build/$(EXECUTABLE)
+	$(CXX) -I include/ src/pwire-sensor-exe.cpp -c $(CFLAGS) $(CXXFLAGS) $(CPPFLAGS) -o build/$(EXECUTABLE).o
+	$(CXX) build/$(EXECUTABLE).o -L ../lib/build/ -lpwire-sensor -o build/$(EXECUTABLE)
 
 clean:
     ifeq ($(OS),Windows_NT)

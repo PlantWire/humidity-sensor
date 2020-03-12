@@ -1,4 +1,4 @@
-ARCHIVE = libpwire
+ARCHIVE = libpwire-sensor
 BUILD_MODE = debug
 
 ifeq ($(BUILD_MODE),debug)
@@ -19,7 +19,7 @@ build_lib:
     else
 	mkdir -p build/
     endif
-	$(CXX) -Iinclude/ src/pwire.cpp -c $(CFLAGS) $(CXXFLAGS) $(CPPFLAGS) -o build/$(ARCHIVE).o
+	$(CXX) -Iinclude/ src/pwire-sensor-lib.cpp -c $(CFLAGS) $(CXXFLAGS) $(CPPFLAGS) -o build/$(ARCHIVE).o
 	ar rcs build/$(ARCHIVE).a build/$(ARCHIVE).o
 
 clean:
