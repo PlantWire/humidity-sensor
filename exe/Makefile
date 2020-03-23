@@ -11,7 +11,7 @@ endif
 
 all:	build_exe
 
-build_exe:
+build_prod:
     ifeq ($(OS),Windows_NT)
         ifeq (exists, IF EXIST build (echo exists))
 		md build/
@@ -19,8 +19,10 @@ build_exe:
     else
 	mkdir -p build/
     endif
-	$(CXX) -I include/ src/$(EXECUTABLE).cpp -c $(CFLAGS) $(CXXFLAGS) $(CPPFLAGS) -o build/$(EXECUTABLE).o
-	$(CXX) build/$(EXECUTABLE).o -L ../lib/build/ -lpwire-sensor -o build/$(EXECUTABLE)
+	../bin/arduino-cli compile --fqbn esp8266:esp8266:d1_mini src/pwire-sensor.ino -o build/pwire-sensor --config-file ../arduino-cli.yml
+
+upload_prod:
+	../bin/arduino-cli upload -p $(PORT) --fqbn esp8266:esp8266:d1_mini -i build/pwire-sensor --config-file ../arduino-cli.yml
 
 clean:
     ifeq ($(OS),Windows_NT)

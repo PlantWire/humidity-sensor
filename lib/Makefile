@@ -11,7 +11,7 @@ endif
 
 all:	build_lib
 
-build_lib:
+build_lib_test:
     ifeq ($(OS),Windows_NT)
         ifeq (exists, IF EXIST build (echo exists))
 		md build/

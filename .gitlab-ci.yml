@@ -21,22 +21,14 @@ unit_tests:
       - test/build/pwire-sensor-test
 build_prod:
   stage: build
-  image: curlimages/curl:latest
+  image: alpine:latest
   only:
     - master
   before_script:
-    - curl -fsSL https://raw.githubusercontent.com/arduino/arduino-cli/master/install.sh | sh
-    - ls .
-    - export PATH=$PATH:/builds/project-0/bin
-    - arduino-cli core update-index --config-file arduino-cli.yml
-    - arduino-cli core install esp8266:esp8266 --config-file arduino-cli.yml
-#    - arduino-cli board listall -- To list all possibilities
+    - apk add make curl
+    - make prepare
   script:
-    - arduino-cli compile --fqbn esp8266:esp8266:d1_mini exe/src/Blink.ino
-    - arduino-cli help lib
-    - ls
-#    - make build_lib_prod
-#    - make build_prod
+    - make build_prod
   artifacts:
     expire_in: 14 days
     paths:

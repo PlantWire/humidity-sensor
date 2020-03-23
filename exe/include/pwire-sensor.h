@@ -1,8 +1,0 @@
-#ifndef EXE_INCLUDE_PWIRE_SENSOR_H_
-#define EXE_INCLUDE_PWIRE_SENSOR_H_
-
-
-
-
-
-#endif /* EXE_INCLUDE_PWIRE_SENSOR_H_ */

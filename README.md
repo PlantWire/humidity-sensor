@@ -43,3 +43,9 @@ pWire Sensor uses the following software for it's build process:
     }
    ```
 5. Upload to repo (only if 3. and 4. had no errors)
+
+### Build prod
+The CI builds the assets for prod but if you are testing with the board and want to build locally the following steps need to be taken (only for linux / in git directory).
+1. `make prepare`
+2. `make build_prod`
+3. `make upload_prod PORT=<path of port>`
