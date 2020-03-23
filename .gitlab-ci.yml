@@ -21,13 +21,12 @@ unit_tests:
       - test/build/pwire-sensor-test
 build_prod:
   stage: build
-  image: debian:latest #alpine:latest
+  image: debian:latest
   only:
     - master
   before_script:
-#    - apk add make curl
     - apt update
-    - apt install make curl -y
+    - apt install make curl python3 -y
     - make prepare
   script:
     - ls -al /root/.arduino15/packages/esp8266/tools/
