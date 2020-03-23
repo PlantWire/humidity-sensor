@@ -28,8 +28,9 @@ build_prod:
     - apk add make curl
     - make prepare
   script:
+    - ls -al /root/.arduino15/packages/esp8266/tools/
     - make build_prod
   artifacts:
     expire_in: 14 days
     paths:
-      - exe/build/pwire-server
+      - exe/build/

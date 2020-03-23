@@ -19,6 +19,7 @@ build_prod:
     else
 	mkdir -p build/
     endif
+	cp -r ../lib/build/pwire-sensor-lib ~/Arduino/libraries/
 	../bin/arduino-cli compile --fqbn esp8266:esp8266:d1_mini src/pwire-sensor.ino -o build/pwire-sensor --config-file ../arduino-cli.yml
 
 upload_prod:
