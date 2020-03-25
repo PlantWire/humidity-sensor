@@ -1,4 +1,6 @@
 # pWire Sensor
+[![pipeline status](https://gitlab.dev.ifs.hsr.ch/epj/2020/pwire/pwire-sensor/badges/master/pipeline.svg)](https://gitlab.dev.ifs.hsr.ch/epj/2020/pwire/pwire-sensor/-/commits/master)
+[![coverage report](https://gitlab.dev.ifs.hsr.ch/epj/2020/pwire/pwire-sensor/badges/master/coverage.svg)](https://gitlab.dev.ifs.hsr.ch/epj/2020/pwire/pwire-sensor/-/commits/master)
 
 ## For Developers:
 

@@ -13,6 +13,7 @@ all:	build_test
 
 run_test:
 	cd build && ./$(EXECUTABLE)
+	gcovr -r . -e "cute/*"
 
 build_test:
     ifeq ($(OS),Windows_NT)
@@ -23,7 +24,7 @@ build_test:
 	mkdir -p build/
     endif
 	$(CXX) -I cute/ src/$(EXECUTABLE).cpp -c $(CFLAGS) $(CXXFLAGS) $(CPPFLAGS) -o build/$(EXECUTABLE).o
-	$(CXX) build/$(EXECUTABLE).o -L ../lib/build/ -lpwire-sensor -o build/$(EXECUTABLE)
+	$(CXX) build/$(EXECUTABLE).o -L ../lib/build/ -o build/$(EXECUTABLE) -lpwire-sensor -fprofile-arcs -ftest-coverage -fPIC
 
 clean:
     ifeq ($(OS),Windows_NT)
