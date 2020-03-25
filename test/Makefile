@@ -1,13 +1,9 @@
 EXECUTABLE = pwire-sensor-test
-BUILD_MODE = debug
 
-ifeq ($(BUILD_MODE),debug)
-	CFLAGS += -g
-else ifeq ($(BUILD_MODE),run)
-	CFLAGS += -O3
-else
-	$(error Build mode $(BUILD_MODE) not supported by this Makefile)
-endif
+CFLAGS += -g
+COVFLAGS += -fprofile-arcs
+COVFLAGS += -ftest-coverage
+COVFLAGS += -fPIC
 
 all:	build_test
 
@@ -23,8 +19,8 @@ build_test:
     else
 	mkdir -p build/
     endif
-	$(CXX) -I cute/ src/$(EXECUTABLE).cpp -c $(CFLAGS) $(CXXFLAGS) $(CPPFLAGS) -o build/$(EXECUTABLE).o
-	$(CXX) build/$(EXECUTABLE).o -L ../lib/build/ -o build/$(EXECUTABLE) -lpwire-sensor -fprofile-arcs -ftest-coverage -fPIC
+	$(CXX) -I cute/ src/$(EXECUTABLE).cpp -c $(CFLAGS) $(CXXFLAGS) $(CPPFLAGS) $(COVFLAGS) -o build/$(EXECUTABLE).o
+	$(CXX) build/$(EXECUTABLE).o $(COVFLAGS) -o build/$(EXECUTABLE) -L ../lib/build/ -lpwire-sensor -Wall -Wextra
 
 clean:
     ifeq ($(OS),Windows_NT)
