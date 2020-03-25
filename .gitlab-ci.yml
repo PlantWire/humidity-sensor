@@ -13,6 +13,7 @@ unit_tests:
   stage: test
   image: gcc:latest
   before_script:
+    - apt update
     - apt install python-pip -y
     - pip install gcovr
   script:
