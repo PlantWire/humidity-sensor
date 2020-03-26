@@ -1,7 +1,7 @@
 FROM debian:latest
 
 RUN apt update
-RUN apt install make curl python3 -y
+RUN apt install make curl python3 git -y
 RUN printf "board_manager:\n  additional_urls:\n    - http://arduino.esp8266.com/stable/package_esp8266com_index.json" > arduino-cli.yml
 ARG BINDIR=/bin
 RUN curl -fsSL https://raw.githubusercontent.com/arduino/arduino-cli/master/install.sh | sh
