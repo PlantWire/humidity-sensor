@@ -28,6 +28,8 @@ build_prod:
   image: gitlab.dev.ifs.hsr.ch:45023/epj/2020/pwire/pwire-sensor:exe
   only:
     - master
+  before_script:
+    - git clone https://github.com/xreef/LoRa_E32_Series_Library.git lib/build/LoRa_E32_Series_Library
   script:
     - make build_prod
   artifacts:

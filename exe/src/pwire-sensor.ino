@@ -1,14 +1,29 @@
+#include <Arduino.h>
+#include <LoRa_E32.h>
 #include <pwire-sensor-lib.h>
-#include <iostream>
+
+LoRa_E32 e32ttl100(D2, D3);
 
 void setup() {
-  pinMode(LED_BUILTIN, OUTPUT);
+  Serial.begin(9600);
+  delay(500);
+  e32ttl100.begin();
+  Serial.println("Hi, I'm going to send message!");
+  ResponseStatus rs = e32ttl100.sendMessage("Hello, world?");
+  Serial.println(rs.getResponseDescription());
 }
 
 void loop() {
-  digitalWrite(LED_BUILTIN, HIGH);
-  delay(1000);
-  digitalWrite(LED_BUILTIN, LOW);
-  delay(1000);
-  HelloWorld(std::cout);
+  if (e32ttl100.available() > 1) {
+    ResponseContainer rc = e32ttl100.receiveMessage();
+    if (rc.status.code != 1) {
+      rc.status.getResponseDescription();
+    } else {
+      Serial.println(rc.data);
+    }
+  }
+  if (Serial.available()) {
+    String input = Serial.readString();
+    e32ttl100.sendMessage(input);
+  }
 }
