@@ -1,0 +1,12 @@
+FROM alpine:latest
+
+RUN apk update
+RUN apk add make
+RUN apk add curl
+RUN apk add python3
+RUN printf "board_manager:\n  additional_urls:\n    - http://arduino.esp8266.com/stable/package_esp8266com_index.json" > arduino-cli.yml
+ARG BINDIR=/bin
+RUN echo ${pwr}
+RUN curl -fsSL https://raw.githubusercontent.com/arduino/arduino-cli/master/install.sh | sh
+RUN /bin/arduino-cli core update-index --config-file arduino-cli.yml
+RUN /bin/arduino-cli core install esp8266:esp8266 --config-file arduino-cli.yml
