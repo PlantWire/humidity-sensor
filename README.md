@@ -48,6 +48,10 @@ pWire Sensor uses the following software for it's build process:
 
 ### Build prod
 The CI builds the assets for prod but if you are testing with the board and want to build locally the following steps need to be taken (only for linux / in git directory).
-1. `make prepare`
+1. Install arduino-cli (run in pwire-sensor directory):
+    1. Set Environment-Variable BINDIR to a directory within your PATH e.g. `export $BINDIR=/bin`
+    2. `curl -fsSL https://raw.githubusercontent.com/arduino/arduino-cli/master/install.sh | sh`
+    3. `arduino-cli core update-index --config-file arduino-cli.yml`
+    4. `arduino-cli core install esp8266:esp8266 --config-file arduino-cli.yml`
 2. `make build_prod`
 3. `make upload_prod PORT=<path of port>`

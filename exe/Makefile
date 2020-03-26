@@ -15,10 +15,10 @@ build_prod:
 	mkdir -p build/
 	mkdir -p ~/Arduino/libraries/
 	cp -r ../lib/build/pwire-sensor-lib ~/Arduino/libraries/
-	../bin/arduino-cli compile --fqbn esp8266:esp8266:d1_mini src/pwire-sensor.ino -o build/pwire-sensor --config-file ../arduino-cli.yml
+	arduino-cli compile --fqbn esp8266:esp8266:d1_mini src/pwire-sensor.ino -o build/pwire-sensor --config-file ../arduino-cli.yml
 
 upload_prod:
-	../bin/arduino-cli upload -p $(PORT) --fqbn esp8266:esp8266:d1_mini -i build/pwire-sensor --config-file ../arduino-cli.yml
+	arduino-cli upload -p $(PORT) --fqbn esp8266:esp8266:d1_mini -i build/pwire-sensor --config-file ../arduino-cli.yml
 
 clean:
 	rm build/$(EXECUTABLE) build/$(EXECUTABLE).o
