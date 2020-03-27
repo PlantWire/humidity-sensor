@@ -1,5 +1,5 @@
 #include <ostream>
 
-void HelloWorld(std::ostream & out) {
-    out << "Hello World";
+void HelloWorld(std::ostream &out) {
+  out << "Hello World";
 }

@@ -2,4 +2,5 @@
 /.metadata/
 **/build/
 .vscode/
+.idea/
 bin/

@@ -3,8 +3,7 @@
 
 #include <iosfwd>
 
-void HelloWorld(std::ostream & out);
-
+void HelloWorld(std::ostream &out);
 
 
 #endif /* LIB_INCLUDE_PWIRE_SENSOR_LIB_H_ */
