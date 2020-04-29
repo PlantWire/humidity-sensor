@@ -8,12 +8,12 @@
 LoRa_E32 e32ttl100(D2, D3);
 constexpr int fiveMinutes = 300000;
 
-int raw= 0;
-int Vin= 5;
-float Vout= 0;
-float R1= 1000;
-float R2= 0;
-float buffer= 0;
+int raw = 0;
+int Vin = 5;
+float Vout = 0;
+float R1 = 1000;
+float R2 = 0;
+float buffer = 0;
 
 void setup() {
   Serial.begin(9600);
@@ -27,29 +27,28 @@ void setup() {
   measure();
 }
 
- 
-
 void loop() {
   delay(fiveMinutes);
   measure();
 }
 
-void measure(){
+void measure() {
   raw = analogRead(A0);
-  if(raw)
-  {
-    buffer= raw * Vin;
-    Vout= (buffer)/1024.0;
-    buffer= (Vin/Vout) -1;
-    R2= R1 * buffer;
+  if (raw) {
+    buffer = raw * Vin;
+    Vout = (buffer)/1024.0;
+    buffer = (Vin/Vout) -1;
+    R2 = R1 * buffer;
 
     std::ostringstream ss;
     ss << R2;
     std::string s(ss.str());
 
-    std::pair<SPWLPacket, bool> result = SPWLPacket::encapsulateData(std::vector<unsigned char>{s.cbegin(), s.cend()});
-    if(result.second) {
-      e32ttl100.sendMessage(result.first.rawData().data(), result.first.rawDataSize());
+    std::pair<SPWLPacket, bool> result = SPWLPacket::
+        encapsulateData(std::vector<unsigned char>{s.cbegin(), s.cend()});
+    if (result.second) {
+      e32ttl100.sendMessage(result.first.rawData().data(),
+          result.first.rawDataSize());
     }
   }
 }
