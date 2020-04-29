@@ -1,6 +1,10 @@
 ARCHIVE = libpwire-sensor
 BUILD_MODE = debug
 
+COVFLAGS += -fprofile-arcs
+COVFLAGS += -ftest-coverage
+COVFLAGS += -fPIC
+
 ifeq ($(BUILD_MODE),debug)
 	CFLAGS += -g
 else ifeq ($(BUILD_MODE),run)
@@ -19,7 +23,7 @@ build_lib_test:
     else
 	mkdir -p build/
     endif
-	$(CXX) -Iinclude/ src/pwire-sensor-lib.cpp -c $(CFLAGS) $(CXXFLAGS) $(CPPFLAGS) -o build/$(ARCHIVE).o
+	$(CXX) -Iinclude/ src/pwire-sensor-lib.cpp -c $(CFLAGS) $(CXXFLAGS) $(CPPFLAGS) $(COVFLAGS) -o build/$(ARCHIVE).o
 	ar rcs build/$(ARCHIVE).a build/$(ARCHIVE).o
 
 build_lib_prod:
