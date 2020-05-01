@@ -1,7 +1,7 @@
 #include "Arduino.h"
 #include "LoRa_E32.h"
 #include "SPWL.h"
-#include "pwire-sensor-lib.h"
+#include <pwire-sensor-lib.h>
 #include <sstream>
 
 // ToDo(ckirchme): D2 or D4
