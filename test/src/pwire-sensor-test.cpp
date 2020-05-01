@@ -7,19 +7,32 @@
 
 #include "../../lib/include/pwire-sensor-lib.h"
 
-void thisIsARunningTest() { ASSERT(true); }
+void maxMeasurementTest() {
+  int result = pwireSensorLib::calculateMeasurement(1023);
+  ASSERT_EQUALM("Max measurement not correct!", 99, result);
+}
 
-void thisIsALibraryTest() {
-  std::ostringstream out{};
-  HelloWorld(out);
-  ASSERT_EQUAL("Hello World", out.str());
+void minMeasurementTest() {
+  int result = pwireSensorLib::calculateMeasurement(0);
+  ASSERT_EQUALM("Min measurement not correct!", 0, result);
+}
+
+void almostMinMeasurementTest() {
+  int result = pwireSensorLib::calculateMeasurement(1);
+  ASSERT_EQUALM("Almost min measurement not correct!", 0, result);
+}
+
+void middleMeasurementTest() {
+  int result = pwireSensorLib::calculateMeasurement(5);
+  ASSERT_EQUALM("Middle measurement not correct!", 80, result);
 }
 
 bool runAllTests(int argc, char const *argv[]) {
   cute::suite s;
-  // TODO(ckirchme) add your test here
-  s.push_back(CUTE(thisIsALibraryTest));
-  s.push_back(CUTE(thisIsARunningTest));
+  s.push_back(CUTE(maxMeasurementTest));
+  s.push_back(CUTE(minMeasurementTest));
+  s.push_back(CUTE(almostMinMeasurementTest));
+  s.push_back(CUTE(middleMeasurementTest));
   cute::xml_file_opener xmlfile(argc, argv);
   cute::xml_listener<cute::ide_listener<>> lis(xmlfile.out);
   bool success = cute::makeRunner(lis, argc, argv)(s, "AllTests");
