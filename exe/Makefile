@@ -16,6 +16,7 @@ build_prod:
 	mkdir -p ~/Arduino/libraries/
 	cp -r ../lib/build/pwire-sensor-lib ~/Arduino/libraries/
 	cp -r ../lib/build/LoRa_E32_Series_Library ~/Arduino/libraries/
+	cp -r ../spwl/build/spwl ~/Arduino/libraries/
 	arduino-cli compile --fqbn esp8266:esp8266:d1_mini src/pwire-sensor.ino -o build/pwire-sensor --config-file ../arduino-cli.yml
 
 upload_prod:
