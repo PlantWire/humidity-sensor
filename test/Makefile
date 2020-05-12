@@ -20,7 +20,7 @@ build_test:
 	mkdir -p build/
     endif
 	$(CXX) -I cute/ src/$(EXECUTABLE).cpp -c $(CFLAGS) $(CXXFLAGS) $(CPPFLAGS) $(COVFLAGS) -o build/$(EXECUTABLE).o
-	$(CXX) build/$(EXECUTABLE).o $(COVFLAGS) -o build/$(EXECUTABLE) -L ../lib/build/ -lpwire-sensor -Wall -Wextra
+	$(CXX) build/$(EXECUTABLE).o $(COVFLAGS) -o build/$(EXECUTABLE) -L ../lib/build/ -lpwire-sensor  -L ../spwl/lib/build -lSPWL -Wall -Wextra
 
 clean:
     ifeq ($(OS),Windows_NT)
