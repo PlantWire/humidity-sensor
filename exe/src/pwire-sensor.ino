@@ -23,7 +23,7 @@ void setup() {
 
 void loop() {
   // Unfortunately due to hardware problems receiving data is not possible
-  //readSPWLPacket();
+  // readSPWLPacket();
   // This code is a simple replacement with a fixed 5 minute schedule
   delay(fiveMinutes);
   measure();
@@ -81,7 +81,6 @@ void readSPWLPacket() {
   ResponseStructContainer rc = e32ttl100.receiveMessage(SPWLPacket::HEADERSIZE);
   String error{};
   if (rc.status.code != 1) {
-    // Todo(ckirchme): Log
     error = rc.status.getResponseDescription();
     Serial.println(error);
   } else {
@@ -92,7 +91,6 @@ void readSPWLPacket() {
           SPWLPacket::CHECKSUMSIZE) {}
       rc = e32ttl100.receiveMessage(header.dataSize + SPWLPacket::CHECKSUMSIZE);
       if (rc.status.code != 1) {
-        // Todo(ckirchme): Log
         error = rc.status.getResponseDescription();
         Serial.println(error);
       } else {
@@ -102,13 +100,11 @@ void readSPWLPacket() {
         if (res.second) {
           processPacket(res.first);
         } else {
-          // Todo(ckirchme): log
           error = "Invalid packet received";
           Serial.println(error);
         }
       }
     } else {
-      // Todo(ckirchme): Log
       error = "Invalid packet received";
       Serial.println(error);
     }
