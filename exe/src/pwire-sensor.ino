@@ -1,12 +1,28 @@
+#include <pwire-sensor-lib.h>  // ToDO(ckirchme): linter error with "
+#include <sstream>
+
 #include "Arduino.h"
 #include "LoRa_E32.h"
 #include "SPWL.h"
-#include <pwire-sensor-lib.h>  // ToDO(ckirchme): linter error with "
-#include <sstream>
+#include "./logger.h"
+
+#define UUID "575ee151-23ee-4c8b-8c09-1a5c010d516f"
+
+using Verbosity = Logger::Verbosity;
+using LogType = Logger::LogType;
 
 // ToDo(ckirchme): D2 or D4
 // ToDo(ckirchme): LoRa_E32 e32ttl100(D2, D3, D5, D7, D6);
 LoRa_E32 e32ttl100(D2, D3);
+Logger logger{
+    [e32ttl100](std::string message) {
+      std::pair<SPWLPacket, bool> result = SPWLPacket::
+          encapsulateData(std::vector<unsigned char>{message.cbegin(),
+          message.cend()});
+      e32ttl100.sendMessage(result.first.rawData().data(),
+          result.first.rawDataSize());
+    }, Logger::Verbosity::HIGHEST, std::string{UUID}};
+
 constexpr int fiveMinutes = 300000;
 
 void setup() {
@@ -30,6 +46,9 @@ void loop() {
 }
 
 void measure() {
+  std::string logMessage{"Starting measurement"};
+  createLogEntry(LogType::INFO, logMessage, Verbosity::NORMAL);
+  Serial.println(logMessage.c_str());
   int measurement = pwireSensorLib::calculateMeasurement(analogRead(A0));
 
   std::ostringstream ss;
@@ -40,7 +59,7 @@ void measure() {
       "{"
         "\"Type\": \"HumidityMeasurementResponse\","
         "\"Target\": \"fe2c15fc-85d2-4691-be70-f4adb326a334\","
-        "\"Sender\": \"575ee151-23ee-4c8b-8c09-1a5c010d516f\","
+        "\"Sender\": \"" + std::string {UUID} + "\","
         "\"Content\": {"
           "\"Value\":" + value +
         "}"
@@ -52,6 +71,10 @@ void measure() {
   if (result.second) {
     e32ttl100.sendMessage(result.first.rawData().data(),
         result.first.rawDataSize());
+  } else {
+    logMessage = "Measurement packet invalid!";
+    createLogEntry(LogType::ERROR, logMessage, Verbosity::NORMAL);
+    Serial.println(logMessage.c_str());
   }
 }
 
@@ -79,10 +102,11 @@ void readSPWLPacket() {
   }
   while (e32ttl100.available() < SPWLPacket::HEADERSIZE) {}
   ResponseStructContainer rc = e32ttl100.receiveMessage(SPWLPacket::HEADERSIZE);
-  String error{};
+  std::string error{};
   if (rc.status.code != 1) {
-    error = rc.status.getResponseDescription();
-    Serial.println(error);
+    error = rc.status.getResponseDescription().c_str();
+    createLogEntry(LogType::WARNING, error, Verbosity::NORMAL);
+    Serial.println(error.c_str());
   } else {
     SPWLHeader header =
         pwireSensorLib::getHeader(static_cast<uint8_t *>(rc.data));
@@ -91,8 +115,9 @@ void readSPWLPacket() {
           SPWLPacket::CHECKSUMSIZE) {}
       rc = e32ttl100.receiveMessage(header.dataSize + SPWLPacket::CHECKSUMSIZE);
       if (rc.status.code != 1) {
-        error = rc.status.getResponseDescription();
-        Serial.println(error);
+        error = rc.status.getResponseDescription().c_str();
+        createLogEntry(LogType::WARNING, error, Verbosity::NORMAL);
+        Serial.println(error.c_str());
       } else {
         SPWLPacket::PacketContainer packet =
             pwireSensorLib::getPacket(header, static_cast<uint8_t *>(rc.data));
@@ -101,14 +126,21 @@ void readSPWLPacket() {
           processPacket(res.first);
         } else {
           error = "Invalid packet received";
-          Serial.println(error);
+          createLogEntry(LogType::WARNING, error, Verbosity::NORMAL);
+          Serial.println(error.c_str());
         }
       }
     } else {
       error = "Invalid packet received";
-      Serial.println(error);
+      createLogEntry(LogType::WARNING, error, Verbosity::NORMAL);
+      Serial.println(error.c_str());
     }
   }
   preambleCount = 0;
 }
+
+void createLogEntry(LogType logType, std::string message, Verbosity v) {
+  logger.push(logType, "[Sensor] " + message, v);
+}
+
 
