@@ -1,7 +1,7 @@
 run_test:
 	cd test/ && make run_test
 
-build_test: build_lib_test
+build_test: build_lib_test build_spwl_test
 	cd test/ && make build_test
 
 clean_test:
@@ -36,3 +36,6 @@ build_spwl:
 	cp spwl/lib/src/SPWL.cpp spwl/build/spwl
 	sed -i 's/..\/include\/SPWL.h/SPWL.h/' spwl/build/spwl/SPWL.cpp
 	sed -i 's/..\/include\/crc16.h/crc16.h/' spwl/build/spwl/SPWL.cpp
+
+build_spwl_test:
+	cd spwl && make build_lib

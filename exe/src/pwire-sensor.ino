@@ -22,6 +22,9 @@ void setup() {
 }
 
 void loop() {
+  // Unfortunately due to hardware problems receiving data is not possible
+  // readSPWLPacket();
+  // This code is a simple replacement with a fixed 5 minute schedule
   delay(fiveMinutes);
   measure();
 }
@@ -51,3 +54,61 @@ void measure() {
         result.first.rawDataSize());
   }
 }
+
+void processPacket(SPWLPacket input) {
+  // Valid packet ... JSON deserialization etc.
+  measure();
+}
+
+int preambleCount = 0;
+void readSPWLPacket() {
+  while (preambleCount < SPWLPacket::PREAMBLESIZE) {
+    if (e32ttl100.available() > 1) {
+      ResponseStructContainer rc = e32ttl100.receiveMessage(1);
+      if (rc.status.code != 1) {
+        rc.status.getResponseDescription();
+      } else {
+        if (pwireSensorLib::checkPreamble(preambleCount,
+            *static_cast<uint8_t *>(rc.data))) {
+          preambleCount++;
+        } else {
+          preambleCount = 0;
+        }
+      }
+    }
+  }
+  while (e32ttl100.available() < SPWLPacket::HEADERSIZE) {}
+  ResponseStructContainer rc = e32ttl100.receiveMessage(SPWLPacket::HEADERSIZE);
+  String error{};
+  if (rc.status.code != 1) {
+    error = rc.status.getResponseDescription();
+    Serial.println(error);
+  } else {
+    SPWLHeader header =
+        pwireSensorLib::getHeader(static_cast<uint8_t *>(rc.data));
+    if (header.dataSize > 0 && header.dataSize < SPWLPacket::MAXDATASIZE) {
+      while (e32ttl100.available() < header.dataSize +
+          SPWLPacket::CHECKSUMSIZE) {}
+      rc = e32ttl100.receiveMessage(header.dataSize + SPWLPacket::CHECKSUMSIZE);
+      if (rc.status.code != 1) {
+        error = rc.status.getResponseDescription();
+        Serial.println(error);
+      } else {
+        SPWLPacket::PacketContainer packet =
+            pwireSensorLib::getPacket(header, static_cast<uint8_t *>(rc.data));
+        std::pair<SPWLPacket, bool> res = SPWLPacket::encapsulatePacket(packet);
+        if (res.second) {
+          processPacket(res.first);
+        } else {
+          error = "Invalid packet received";
+          Serial.println(error);
+        }
+      }
+    } else {
+      error = "Invalid packet received";
+      Serial.println(error);
+    }
+  }
+  preambleCount = 0;
+}
+

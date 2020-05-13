@@ -31,6 +31,7 @@ build_lib_prod:
 	cp include/pwire-sensor-lib.h build/pwire-sensor-lib
 	cp src/pwire-sensor-lib.cpp build/pwire-sensor-lib
 	cp library.properties build/pwire-sensor-lib
+	sed -i 's|../../spwl/lib/include/SPWL.h|SPWL.h|' build/pwire-sensor-lib/pwire-sensor-lib.h
 
 clean:
     ifeq ($(OS),Windows_NT)
