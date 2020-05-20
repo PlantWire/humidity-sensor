@@ -57,11 +57,11 @@ void measure() {
 
   std::string message {
       "{"
-        "\"Type\": \"HumidityMeasurementResponse\","
-        "\"Target\": \"fe2c15fc-85d2-4691-be70-f4adb326a334\","
-        "\"Sender\": \"" + std::string {UUID} + "\","
-        "\"Content\": {"
-          "\"Value\":" + value +
+        "\"type\": \"HumidityMeasurementResponse\","
+        "\"target\": \"fe2c15fc-85d2-4691-be70-f4adb326a334\","
+        "\"sender\": \"" + std::string {UUID} + "\","
+        "\"content\": {"
+          "\"value\":" + value +
         "}"
       "}"};
 
