@@ -20,7 +20,7 @@ upload_prod:
 	cd exe/ && make upload_prod
 
 prepare:
-	curl -fsSL https://raw.githubusercontent.com/arduino/arduino-cli/master/install.sh | sh
+	cd /usr && curl -fsSL https://raw.githubusercontent.com/arduino/arduino-cli/master/install.sh | sh
 	arduino-cli core update-index --config-file arduino-cli.yml
 	arduino-cli core install esp8266:esp8266 --config-file arduino-cli.yml
 	git clone https://github.com/xreef/LoRa_E32_Series_Library.git lib/build/LoRa_E32_Series_Library
