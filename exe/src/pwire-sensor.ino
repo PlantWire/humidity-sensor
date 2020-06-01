@@ -1,6 +1,6 @@
 #include <sstream>
 
-#include "pwire-sensor-lib.h"
+#include "./pwire-sensor-lib.h"
 #include "Arduino.h"
 #include "LoRa_E32.h"
 #include "SPWL.h"
