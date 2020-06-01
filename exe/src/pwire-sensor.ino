@@ -1,6 +1,6 @@
-#include <pwire-sensor-lib.h>  // ToDO(ckirchme): linter error with "
 #include <sstream>
 
+#include "pwire-sensor-lib.h"
 #include "Arduino.h"
 #include "LoRa_E32.h"
 #include "SPWL.h"
