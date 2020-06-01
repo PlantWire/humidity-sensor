@@ -42,10 +42,7 @@ jobs:
     - name: prepare
       run: git clone https://github.com/xreef/LoRa_E32_Series_Library.git lib/build/LoRa_E32_Series_Library
     - name: build
-      run: |
-        make build_lib_prod
-        make build_prod
-        cp exe/build/pwire-server .
+      run: make build_prod
     - run: echo ::set-output name=SERVER_VERSION::`cat version.txt`
       id: set_version
     - name: Create Release
