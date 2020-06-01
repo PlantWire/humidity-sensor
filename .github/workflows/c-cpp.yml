@@ -1,0 +1,80 @@
+name: C/C++ CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    container: python:latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: prepare
+      run: pip install cpplint
+    - name: lint
+      run: make lint
+  test:
+    runs-on: ubuntu-latest
+    container: gcc:latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: prepare
+        run: |
+          apt update
+          apt install python-pip -y
+          pip install gcovr
+      - name: Checkout submodules
+        uses: textbook/git-checkout-submodule-action@2.1.1
+      - name: test
+        run: |
+          make build_test
+          make run_test
+  build:
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/master'
+    needs: [lint, test]
+    container: vec7or/pwire-sensor-ci:build
+    steps:
+    - uses: actions/checkout@v2
+    - name: Checkout submodules
+      uses: textbook/git-checkout-submodule-action@2.1.1
+    - name: prepare
+      run: git clone https://github.com/xreef/LoRa_E32_Series_Library.git lib/build/LoRa_E32_Series_Library
+    - name: build
+      run: |
+        make build_lib_prod
+        make build_prod
+        cp exe/build/pwire-server .
+    - run: echo ::set-output name=SERVER_VERSION::`cat version.txt`
+      id: set_version
+    - name: Create Release
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ steps.set_version.outputs.SERVER_VERSION }}
+        release_name: Release ${{ steps.set_version.outputs.SERVER_VERSION }}
+        draft: false
+        prerelease: false
+    - name: Upload Release bin
+      id: upload_release_bin
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
+        asset_path: ./exe/build/pwire-sensor.bin
+        asset_name: pwire-sensor.bin
+        asset_content_type: application/octet-stream
+    - name: Upload Release elf
+      id: upload_release_elf
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
+        asset_path: ./exe/build/pwire-sensor.elf
+        asset_name: pwire-sensor.elf
+        asset_content_type: application/octet-stream

@@ -1,5 +1,0 @@
-- [ ] Code übersetzt
-- [ ] Code ist getestet, automatisierte Unit-Tests laufen erfolgreich durch
-- [ ] Code enthält keine auskommentierte Codeblöcke
-- [ ] Code ist verständlich und wo nötig dokumentiert
-- [ ] Code Guidelines und Richtlinien wurden weitgehend eingehalten
