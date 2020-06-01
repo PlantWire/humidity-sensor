@@ -1,10 +1,10 @@
 #include <sstream>
 
-#include "./pwire-sensor-lib.h"
-#include "Arduino.h"
-#include "LoRa_E32.h"
-#include "SPWL.h"
-#include "./logger.h"
+#include <Arduino.h>
+#include <LoRa_E32.h>
+#include <SPWL.h>
+#include <logger.h>
+#include <pwire-sensor-lib.h>
 
 #define UUID "575ee151-23ee-4c8b-8c09-1a5c010d516f"
 
